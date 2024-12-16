@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { fetchDataFromGrok } from './GrokApi'; 
 
-const ChatbotScreen = () => {
+const Chatsum = () => {
   const [messages, setMessages] = useState([]); // Message history
   const [userInput, setUserInput] = useState(''); // Current user input
   const [isLoading, setIsLoading] = useState(false); // Loading state for the chatbot
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatbotScreen;
+export default Chatsum;

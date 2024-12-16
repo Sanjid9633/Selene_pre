@@ -13,8 +13,9 @@ import { collection, query, doc, orderBy, onSnapshot } from 'firebase/firestore'
 import CustomAppBar from './components/CustomAppbar';
 import JournalEntryButton from './components/JournalEntryButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const [journals, setJournals] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = FIREBASE_AUTH.currentUser;
@@ -133,6 +134,14 @@ const HomeScreen = ({navigation}) => {
 
       <JournalEntryButton navigation={navigation}/>
 
+      {/* New Button to Navigate to ChatSum */}
+      <TouchableOpacity
+        style={[styles.floatingButton, styles.aboveLeftButton]}
+        onPress={() => navigation.navigate('Chatsum')}
+      >
+        <AntDesign name="cloudo" size={30} color="#fff" />
+      </TouchableOpacity>
+
       <TouchableOpacity
         style={[styles.floatingButton, styles.rightButton]}
         onPress={() => navigation.navigate('ChatbotScreen')}
@@ -220,6 +229,10 @@ const styles = StyleSheet.create({
   },
   rightButton: {
     right: '8%',
+  },
+  aboveLeftButton: {
+    left: '8%',
+    bottom: 100,
   },
   logoutButton: {
     position: 'absolute',
