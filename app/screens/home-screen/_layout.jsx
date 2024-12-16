@@ -4,6 +4,7 @@ import HomeScreen from './HomeScreen';
 import Screen2 from './Screen2';
 import JournalCalendar from './JournalCalender';
 import JournalEntryPage from './JournalEntryPage';
+import ChatbotScreen from './ChatbotScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -22,6 +23,10 @@ function HomeStackLayout() {
       <HomeStack.Screen 
         name="JournalEntry" 
         component={JournalEntryPage}
+      />
+      <HomeStack.Screen 
+        name="ChatbotScreen" 
+        component={ChatbotScreen}
       />
     </HomeStack.Navigator>
   );
