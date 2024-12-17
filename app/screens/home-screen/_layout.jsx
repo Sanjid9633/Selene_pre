@@ -5,6 +5,7 @@ import Screen2 from './Screen2';
 import JournalCalendar from './JournalCalender';
 import JournalEntryPage from './JournalEntryPage';
 import Chatsum from './Chatsum';
+import TaskPage from './TaskPage';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -27,6 +28,10 @@ function HomeStackLayout() {
       <HomeStack.Screen 
         name="Chatsum" 
         component={Chatsum}
+      />
+      <HomeStack.Screen 
+        name="TaskPage" 
+        component={TaskPage}
       />
     </HomeStack.Navigator>
   );

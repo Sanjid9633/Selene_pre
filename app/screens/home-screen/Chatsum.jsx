@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { fetchDataFromGrok } from './GrokApi'; 
+import { fetchDataFromGrok } from './GrokApi';
 
 const Chatsum = () => {
   const [messages, setMessages] = useState([]); // Message history
@@ -45,6 +45,11 @@ const Chatsum = () => {
     }
   };
 
+  const handleSummarize = () => {
+    console.log('Summarize Pressed');
+    // Add summarize functionality here
+  };
+
   return (
     <View style={styles.container}>
       {/* Chat messages */}
@@ -83,6 +88,13 @@ const Chatsum = () => {
         />
         <TouchableOpacity onPress={handleSendMessage}>
           <Icon name="send" size={24} color="teal" />
+        </TouchableOpacity>
+      </View>
+
+      {/* Summarize Button */}
+      <View style={styles.summarizeButtonContainer}>
+        <TouchableOpacity style={styles.summarizeButton} onPress={handleSummarize}>
+          <Text style={styles.summarizeButtonText}>Summarize</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -140,6 +152,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontStyle: 'italic',
     color: '#555',
+  },
+  summarizeButtonContainer: {
+    alignItems: 'center', // Center horizontally
+    marginTop: 10, // Add spacing from input field
+    marginBottom: 10, // Add spacing at bottom
+  },
+  summarizeButton: {
+    backgroundColor: 'teal', // Teal color for button
+    paddingVertical: 12, // Vertical padding
+    paddingHorizontal: 32, // Horizontal padding
+    borderRadius: 20, // Rounded corners
+  },
+  summarizeButtonText: {
+    color: 'white', // White text color
+    fontSize: 16, // Text size
+    fontWeight: 'bold', // Make text bold
   },
 });
 
