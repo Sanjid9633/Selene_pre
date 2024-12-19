@@ -15,7 +15,7 @@ const CustomAppBar = () => {
       } 
     />
 
-      <Text style={styles.welcomeText}>Hey, Agay</Text>
+      <Text style={styles.welcomeText}>Selene</Text>
 
       
 

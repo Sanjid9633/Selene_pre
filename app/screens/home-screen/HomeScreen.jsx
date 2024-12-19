@@ -144,7 +144,7 @@ const HomeScreen = ({ navigation }) => {
 
       <TouchableOpacity
         style={[styles.floatingButton, styles.rightButton]}
-        onPress={() => navigation.navigate('ChatbotScreen')}
+        onPress={() => navigation.navigate('TaskPage')}
       >
         <Icon name="chat" size={24} color="white" />
       </TouchableOpacity>

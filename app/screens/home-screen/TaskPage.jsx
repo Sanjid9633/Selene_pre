@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View, FlatList, StyleSheet, Alert } from "react-native";
 
-const TaskPage1 = () => {
+const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null);
@@ -133,4 +133,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TaskPage1;
+export default TaskPage;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, Alert, StyleSheet, Image, ScrollView, Platform, KeyboardAvoidingView } from 'react-native';
-import { doc, collection, addDoc, onSnapshot } from 'firebase/firestore';
+import { doc, collection, addDoc, onSnapshot, Timestamp } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
 import * as Audio from 'expo-av';
 import * as DocumentPicker from 'expo-document-picker';
@@ -18,7 +18,7 @@ const JournalEntryPage = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [recording, setRecording] = useState(null);
   const [audioUri, setAudioUri] = useState('');
-  const [journalEntries, setJournalEntries] = useState([]); // State to store journal entries
+  const [journalEntries, setJournalEntries] = useState([]);
 
   // Fetch journal entries on component mount using Firestore's onSnapshot for real-time updates
   useEffect(() => {
@@ -29,7 +29,6 @@ const JournalEntryPage = () => {
     setDate(formattedDate);
     setTime(formattedTime);
 
-    // Fetch journal entries in real-time using onSnapshot
     const userId = FIREBASE_AUTH.currentUser?.uid;
     if (userId) {
       const unsubscribe = onSnapshot(collection(FIRESTORE_DB, 'users', userId, 'journals'), (querySnapshot) => {
@@ -37,12 +36,12 @@ const JournalEntryPage = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        setJournalEntries(entries.reverse()); // reverse to show latest at the bottom
+        entries.sort((a, b) => a.createdAt.seconds - b.createdAt.seconds);
+        setJournalEntries(entries);
       }, (error) => {
         console.error('Error fetching journal entries:', error);
       });
 
-      // Cleanup function to unsubscribe from listener when the component unmounts
       return () => unsubscribe();
     }
   }, []);
@@ -118,8 +117,7 @@ const JournalEntryPage = () => {
     }
 
     try {
-      const userId = FIREBASE_AUTH.currentUser?.uid; // Get the current user's UID
-
+      const userId = FIREBASE_AUTH.currentUser?.uid;
       if (!userId) {
         Alert.alert('Error', 'User is not logged in.');
         return;
@@ -129,7 +127,7 @@ const JournalEntryPage = () => {
         text: journalText,
         date,
         time,
-        createdAt: new Date(),
+        createdAt: Timestamp.now(),
         media: selectedImages.map(image => ({
           type: image.type,
           uri: image.uri,
@@ -137,11 +135,9 @@ const JournalEntryPage = () => {
         audioUri,
       };
 
-      // Reference the user's document and their journals subcollection
-      const userDocRef = doc(FIRESTORE_DB, 'users', userId); // Reference to the user document
-      const journalsCollectionRef = collection(userDocRef, 'journals'); // Subcollection under the user document
+      const userDocRef = doc(FIRESTORE_DB, 'users', userId);
+      const journalsCollectionRef = collection(userDocRef, 'journals');
 
-      // Add the journal entry to the journals subcollection
       await addDoc(journalsCollectionRef, docData);
 
       Alert.alert('Success', 'Journal entry saved successfully!');
@@ -154,7 +150,7 @@ const JournalEntryPage = () => {
     }
   };
 
-  const renderJournalEntry = (journal) => {
+  const renderJournalEntry = (journal, index) => {
     return (
       <View key={journal.id} style={styles.chatBubble}>
         <Text style={styles.journalDate}>{journal.date} {journal.time}</Text>
@@ -185,7 +181,7 @@ const JournalEntryPage = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.chatContainer}>
           {journalEntries.length > 0 ? (
-            journalEntries.map(renderJournalEntry)
+            journalEntries.map((journal, index) => renderJournalEntry(journal, index))
           ) : (
             <Text>No journal entries found.</Text>
           )}
